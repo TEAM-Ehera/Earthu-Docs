@@ -20,7 +20,7 @@ API: `KAKAO_REST_API_KEY`, `REDIS_HOST`, `REDIS_PORT`, `REDIS_PASSWORD`, 선택�
 
 두 DB의 마이그레이션 전 SQL 백업과 각 환경의 기존 환경변수 백업을 보관했다. 롤백은 이전 API 이미지·환경 설정으로 복귀한다. V4 컬럼은 추가형이므로 이전 코드와 호환되며 볼륨 삭제·DB 초기화를 하지 않는다. 프론트는 Vercel의 이전 운영 배포로 복귀할 수 있다.
 
-개발 CI는 Redis 오버레이를 전달하도록 수정했다. SSH 자동 배포 활성화는 기존 `DEV_DEPLOY_ENABLED` 설정을 따른다. 이번 서버 배포는 직접 수행했다. 웹 환경변수 변경 후에는 새 빌드가 필요하다. 웹 커밋 `1220bb1`을 Preview와 Production으로 각각 빌드했다. 개발 고정 주소는 Preview에 alias를 할당하고 운영 주소는 Production에 반영했다. PR은 아직 병합하지 않았으므로 다음 develop/main 배포 전 기능 PR을 반영해야 한다.
+개발 CI는 Redis 오버레이를 전달하도록 수정했다. SSH 자동 배포 활성화는 기존 `DEV_DEPLOY_ENABLED` 설정을 따른다. 이번 서버 배포는 직접 수행했다. 웹 환경변수 변경 후에는 새 빌드가 필요하다. 웹 커밋 `1220bb1`을 Preview와 Production으로 각각 빌드했다. 개발 고정 주소는 Preview에 alias를 할당하고 운영 주소는 Production에 반영했다. 2026-10-02 GitHub 확인 기준 API PR #1은 병합됐고 웹 PR #1은 열려 있다. 다음 웹 develop/main 배포 전 웹 기능 PR 반영 여부를 확인한다.
 
 ## 확인 결과
 
@@ -39,3 +39,11 @@ API: `KAKAO_REST_API_KEY`, `REDIS_HOST`, `REDIS_PORT`, `REDIS_PASSWORD`, 선택�
 - [API PR](https://github.com/TheSoftBelly/eolssu-api/pull/1)
 - [웹 PR](https://github.com/TheSoftBelly/eolssu-web/pull/1)
 - 상세 API 계약·Compose 실행 명령은 API 저장소 `docs/api/kakao-places.md`.
+
+## 2026-10-02 반응형·상세·검색 검증
+
+320·390·768·1280px에서 장소 선택과 이벤트 상세의 가로 넘침이 없음을 확인했다. 좁은 320px 화면에서는 검색 버튼을 다음 줄에 배치하고, 모바일 입력을 16px로 조정했다. 이전·다음 버튼은 높이 44px, 선택 항목의 다크 모드 명암 대비는 10.5:1로 확인했다. 키보드 포커스 표시와 긴 주소 줄바꿈을 보완했다.
+
+모바일 상세는 제목·주최자 → 날짜·장소·정원·참여 → 설명·댓글·후기 순서로 개선했다. 데스크톱에서는 모임 정보를 오른쪽에 유지한다. 장소 주소·상세 만남 위치·카카오맵 링크를 구분하고 지도 링크 터치 영역을 44px로 확보했다. 기존 텍스트 장소 이벤트도 정상 표시된다.
+
+모임 제목 검색은 앞뒤 공백을 제외하고 결과를 표시하는지, 없는 검색어 안내와 필터 초기화, 서울+문화 필터 조합을 실제 UI로 확인했다. 장소 검색·선택도 로컬 API에서 확인했다. 별도 로컬 3001 포트는 카카오 허용 도메인에 등록하지 않아 지도 SDK 오류 시 대체 안내·외부 링크를 확인했고, 실제 지도는 운영 도메인에서 검증한다.
