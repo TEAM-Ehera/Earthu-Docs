@@ -13,14 +13,14 @@
 
 ## 설정과 배포
 
-API: `KAKAO_REST_API_KEY`, `REDIS_HOST`, `REDIS_PORT`, `REDIS_PASSWORD`, 선택적 `PLACE_CACHE_TTL`.
+API: `KAKAO_REST_API_KEY`, `REDIS_HOST`, `REDIS_PORT`, `REDIS_PASSWORD`, 선택적 `PLACE_CACHE_TTL`. 공유 네트워크가 있으면 `PLACE_REDIS_HOST`에 각 환경의 고유 Redis 컨테이너 이름을 지정한다. 공통 `redis` DNS 별칭이 다른 환경을 가리키는 문제를 방지한다.
 웹 빌드: `NEXT_PUBLIC_KAKAO_MAP_KEY`. REST 키는 서버에만 저장한다. 실제 키·비밀번호는 Git에 포함하지 않는다. 카카오 콘솔의 허용 웹 도메인을 실제 접속 주소와 맞춘다.
 
 개발·운영 API에 각각 `compose.places.yaml` 오버레이를 적용했다. API 이미지 `eolssu-api:places-20261002`, Flyway V4가 장소 컬럼을 추가한다. 배포 이미지는 이번 장소 기능과 기존 개발 Swagger 작업을 함께 유지했으며, 장소 기능 PR은 Swagger 변경을 포함하지 않는다. 작은 VM에서는 사전 빌드한 JAR와 `deploy/Dockerfile.runtime`으로 이미지를 만들어 Maven 빌드 부담을 줄인다.
 
 두 DB의 마이그레이션 전 SQL 백업과 각 환경의 기존 환경변수 백업을 보관했다. 롤백은 이전 API 이미지·환경 설정으로 복귀한다. V4 컬럼은 추가형이므로 이전 코드와 호환되며 볼륨 삭제·DB 초기화를 하지 않는다. 프론트는 Vercel의 이전 운영 배포로 복귀할 수 있다.
 
-개발 CI는 Redis 오버레이를 전달하도록 수정했다. SSH 자동 배포 활성화는 기존 `DEV_DEPLOY_ENABLED` 설정을 따른다. 이번 서버 배포는 직접 수행했다. 웹 환경변수 변경 후에는 새 빌드가 필요하다.
+개발 CI는 Redis 오버레이를 전달하도록 수정했다. SSH 자동 배포 활성화는 기존 `DEV_DEPLOY_ENABLED` 설정을 따른다. 이번 서버 배포는 직접 수행했다. 웹 환경변수 변경 후에는 새 빌드가 필요하다. 웹 커밋 `1220bb1`을 Preview와 Production으로 각각 빌드했다. 개발 고정 주소는 Preview에 alias를 할당하고 운영 주소는 Production에 반영했다. PR은 아직 병합하지 않았으므로 다음 develop/main 배포 전 기능 PR을 반영해야 한다.
 
 ## 확인 결과
 
