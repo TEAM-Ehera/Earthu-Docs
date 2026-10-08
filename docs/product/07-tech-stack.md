@@ -32,11 +32,11 @@ tags: ["얼쑤", "문서/architecture"]
 
 ## 개발·운영 환경 분리
 
-A1 추가 VM의 용량 부족으로 기존 무료 Micro API/DB VM 두 대를 공유한다. API VM은 내부 [접속 IP 비공개], 공인 129.225.175.229이며 DB VM은 내부 [접속 IP 비공개], 공인 IP가 없다. 두 VM 모두 RAM 1GB·swap 2GB이고 swap은 RAM 증설을 대체하지 않는다.
+A1 추가 VM의 용량 부족으로 기존 무료 Micro API/DB VM 두 대를 공유한다. API VM은 내부 [접속 IP 비공개], 공인 [접속 IP 비공개]이며 DB VM은 내부 [접속 IP 비공개], 공인 IP가 없다. 두 VM 모두 RAM 1GB·swap 2GB이고 swap은 RAM 증설을 대체하지 않는다.
 
 | 항목 | 개발 | 운영 |
 | --- | --- | --- |
-| 웹 | https://eolssu-web-git-develop-thesoftbellys-projects.vercel.app | https://eolssu-web.vercel.app |
+| 웹 | https://eolssu-web-git-develop-thesoftbellys-projects.vercel.app | https://earthuu.vercel.app |
 | API | 운영 담당자에게 전달받은 HTTPS 주소 | 운영 담당자에게 전달받은 HTTPS 주소 |
 | Spring 프로필 | dev | prod |
 | API Docker 프로젝트 | eolssu-dev | eolssu-prod |

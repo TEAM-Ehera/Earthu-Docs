@@ -8,7 +8,7 @@ type: "api-spec"
 version: "0.9"
 status: "심사 제거 · 등록 즉시 공개 · 세부 운영 검토 중"
 created: "2026-09-29"
-updated: "2026-10-01"
+updated: "2026-10-08"
 tags:
   - "얼쑤"
   - "문서/api-spec"
@@ -62,6 +62,22 @@ Base path `/v1`, JSON·snake_case, UUID ID, UTC timestamp. 성공 `{data:...}`, 
 400 요청 형식, 401 인증 실패, 403 권한/가입 미완료, 404 접근 불가 비공개 객체, 409 정원/상태/중복/버전 충돌, 422 필드 오류, 429 제한 초과(Retry-After). 알 수 없는 쓰기 필드는 422. 표시 message와 제어용 code를 분리한다.
 
 ## 인증·학교 확인·프로필
+
+### 현재 구현된 계정 관리 API (2026-10-03)
+
+아래는 현재 Controller의 실제 계약이다. 뒤의 OAuth·Challenge·Bearer·snake_case 표는 확장 목표 계약이며 현재 호출 경로와 구분한다. 계정 관리는 HttpOnly 세션/refresh 쿠키, 변경 요청의 `X-Eolssu-Request: 1` 헤더와 현재 DTO 필드명을 사용한다.
+
+| 실제 메서드·경로 | 요청·권한 | 성공 |
+| --- | --- | --- |
+| POST `/v1/auth/password-reset/request` | 공개, `{email}` | 200 동일 `message`, 인증된 계정에 코드 발송 |
+| POST `/v1/auth/password-reset/confirm` | 공개, `{email,code,password}` | 204 비밀번호 변경·전체 세션 폐기 |
+| POST `/v1/auth/logout-all` | 로그인 | 204 현재 기기 포함 전체 세션 폐기 |
+| GET `/v1/me/account/data-policy` | 로그인 | 200 `{data:{deleted,anonymized,retained,requirement}}` |
+| DELETE `/v1/me/account` | 로그인, `{password,confirmed:true}` | 204 탈퇴·데이터 처리 |
+
+코드 10분·5회 오입력·재발송 60초, IP/이메일 요청 제한을 적용한다. 재설정 비밀번호는 8자 이상·UTF-8 72바이트 이하다. 탈퇴 시 예정된 공개 주최 모임이 있으면 409, 비밀번호 불일치는 403, 동의 누락은 400이다. 로컬 검증 완료이며 운영 적용·실제 수신 검증은 대기다. 삭제·유지 범위와 검증 상세는 [계정 관리·탈퇴 데이터 처리](16-account-management.md)를 따른다.
+
+### 확장 목표 계약
 
 | Method / path | 권한 | 요청 | 성공 |
 |---|---|---|---|
@@ -331,3 +347,9 @@ JPEG/PNG/WebP 최대 5MB와 별도 픽셀 수 제한을 초기 제안으로 둔�
 
 > [!info] 실제 구현과 구조
 > 설계와 현재 코드의 차이는 [작업 현황과 다음 개발](08-work-status.md), 실제 패키지·동작·런타임 DB는 [백엔드 아키텍처](09-backend-architecture.md)에서 확인한다.
+
+## 2026-10-08 구현 API · Swagger
+
+현재 프론트엔드 연동은 [실제 API 명세서](../api/API_SPEC.md), [OpenAPI JSON](../api/openapi.json), [Swagger 사용 안내](../api/SWAGGER.md)를 기준으로 합니다. 인증·계정 관리·모임·장소·이미지·댓글·후기·신고의 실제 camelCase 필드와 응답 래퍼, 요청 보호 헤더, 오류 상태를 정리했습니다. 위 목표 설계의 Bearer·cursor·revision·outbox 계약은 현재 구현과 구분합니다.
+
+명세는 2026-10-08 로컬 소스 기준입니다. 계정 관리·인증 보호·주최 모임 삭제는 로컬 구현과 배포 여부를 구분하며 운영 검증 완료로 간주하지 않습니다. Swagger 런타임은 local/docker/dev에만 제공하고 prod에서는 비활성화합니다. 취소 `DELETE /v1/events/{id}`는 사유 본문과 상세 유지, 삭제 `DELETE /v1/events/{id}/host`는 본문 없이 조회 제외라는 서로 다른 계약입니다.

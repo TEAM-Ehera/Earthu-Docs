@@ -11,7 +11,7 @@ updated: 2026-10-01
 
 운영 Vercel 환경에는 API_ORIGIN이 없었다. develop Preview에만 값이 있어 운영 웹의 /v1 요청에 rewrite가 생성되지 않았다. Production API_ORIGIN을 아래 운영 API로 설정하고 웹 main을 develop의 검증된 코드로 갱신하여 재배포했다.
 
-- 운영 웹: https://eolssu-web.vercel.app
+- 운영 웹: https://earthuu.vercel.app
 - 운영 API: 운영 담당자에게 전달받은 HTTPS 주소
 - Vercel 배포: HAm392tAahWHmswq9ifh4FvpEfeC / Production Ready.
 - 웹 코드: 2160c4a. API 실행 이미지: f505ced의 기존 검증된 AMD64 이미지, Spring prod 프로필.
@@ -48,3 +48,13 @@ API HTTPS 인증서 발급 완료, health UP, 운영 DB Flyway V1/V2 적용 성�
 - 별도 서버 확보 및 개발·운영 장애/자원 격리.
 
 관련: [11-development-deployment](11-development-deployment.md), [08-work-status](08-work-status.md), [10-gmail-setup](10-gmail-setup.md).
+
+## 2026-10-07 earthuu 영문 브랜드·대표 주소 전환
+
+Vercel의 기존 `eolssu-web` 프로젝트에 `earthuu.vercel.app`을 등록하고 Production `NEXT_PUBLIC_SITE_URL=https://earthuu.vercel.app`, `NEXT_PUBLIC_API_URL=same-origin`으로 배포했습니다. 웹 배포는 `dpl_ABGmbb2UMVXEUhWHTwZGJVbVB7Un`(Ready)입니다. 영문 화면 표기는 `earthuu`, 한글 표기는 `얼쑤`입니다. API는 기존 HEAD `e606bcc`에 인증 메일 영문 브랜드와 CORS 쉼표 구분 주소 지원만 적용한 `eolssu-api:earthuu-20261007` 이미지입니다. 운영 `WEB_ORIGIN`에 새 주소와 기존 주소를 함께 유지하며 DB 마이그레이션은 변경하지 않았습니다. 카카오 지도는 앱의 JavaScript SDK 도메인에 새 주소를 추가해야 합니다.
+
+새 웹 주소에서 모임 조회 200(2개), 미로그인 `/v1/me` 401, 학교 이메일 조회 200, 빈 로그인 입력 400을 확인했습니다. 새 주소와 기존 주소의 API CORS 응답 모두 정상입니다. 카카오 지도 SDK는 새 주소에서 `401 domain mismatched`를 반환하므로 별도 도메인 등록이 남아 있습니다.
+
+## 2026-10-08 기존 웹 주소 폐쇄
+
+서버 SSH 연결과 운영 API readiness 200을 확인했습니다. 새 주소에서 카카오 지도 SDK 200을 확인한 뒤 Vercel 프로젝트에서 `eolssu-web.vercel.app` 도메인을 제거했습니다. 운영 도메인은 `earthuu.vercel.app`입니다. 기존 웹 주소는 더 이상 서비스를 제공하지 않습니다.

@@ -117,7 +117,7 @@ eolssu-api/
 6. eolssu_session JWT와 eolssu_refresh 쿠키는 HttpOnly·SameSite=Lax이며 dev/prod에서 Secure=true다. DB 세션은 7일 절대 만료, JWT는 15분 만료 후 refresh 쿠키로 자동 재발급한다.
 7. 프로필 작성 후 참여/생성을 허용한다. 로그인 시 프로필 미완료 회원은 웹에서 프로필 페이지로 이동한다.
 
-JWT 서명·issuer·audience·만료와 DB 세션을 함께 검사한다. 로그아웃 시 DB 세션을 폐기한다. 자세한 동작은 [13-host-auth-monitoring](13-host-auth-monitoring.md)를 따른다. Spring Security 인증 필터 체인은 없으며 각 Controller가 세션과 권한을 검사한다. BCrypt 라이브러리 사용만으로 경로 전체가 보호되는 것은 아니다. CSRF·전역 요청 제한·모든 세션 회수는 다음 작업이다.
+JWT 서명·issuer·audience·만료와 DB 세션을 함께 검사한다. 로그아웃 시 DB 세션을 폐기한다. 자세한 동작은 [13-host-auth-monitoring](13-host-auth-monitoring.md)를 따른다. Spring Security 인증 필터 체인은 없으며 각 Controller가 세션과 권한을 검사한다. BCrypt 라이브러리 사용만으로 경로 전체가 보호되는 것은 아니다. CSRF·인증 요청 제한은 2026-10-03 소스에 구현했으며 운영 배포·프록시 IP 검증은 대기 중이다. 전체 세션 회수는 별도 계정 관리 작업에서 다룬다.
 
 ### 모임 작성과 공개
 
@@ -250,3 +250,9 @@ common/         실제 공유되는 오류 응답·인증 처리만 배치
 ## 2026-10-02 확장
 
 EventHostController가 수정·취소·신청자 조회와 호스트 권한을 담당한다. JwtService가 JWT 서명·검증을 담당한다. V3가 취소 사유 필드를 추가하며 Micrometer·Grafana/Prometheus·node-exporter로 서버를 관측한다. 현재 Gateway는 Docker DNS와 Caddy 기반이다. [13-host-auth-monitoring](13-host-auth-monitoring.md)를 따른다.
+
+## 2026-10-03 인증 요청 보호
+
+`security/RequestProtection`을 `/v1/**` MVC 인터셉터로 등록했다. 변경 요청의 전용 헤더·Origin을 검사하고 인증 엔드포인트의 IP 제한을 Controller 진입 전에 적용한다. `AuthRateLimiter`는 Controller에서 정규화된 이메일 제한도 적용한다. dev/prod의 `RedisRateLimitStore`는 원자적 카운트·TTL, local/docker의 `LocalRateLimitStore`는 최대 10,000개 키의 메모리 대체 구현이다.
+
+CORS는 명시적인 웹 출처와 Content-Type/X-Eolssu-Request만 허용한다. 전달 IP 헤더는 명시적으로 신뢰한 직접 프록시에서만 사용한다. 웹은 `apiFetch`로 JSON·multipart·본문 없는 변경 요청에 같은 헤더를 전송한다. 소스 구현·테스트 완료와 운영 적용은 구분하며, 운영 사용자별 IP 전달 확인이 남아 있다. 상세는 백엔드 `docs/api/AUTH_REQUEST_PROTECTION.md`를 따른다.

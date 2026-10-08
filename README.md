@@ -6,7 +6,9 @@
 - [전체 문서 지도](docs/product/README.md)
 - [PRD](docs/product/01-prd.md) · [결정 로그](docs/product/06-decisions.md)
 - [개발 현황](docs/product/08-work-status.md) · [최신 구현·검증 기록](docs/product/13-host-auth-monitoring.md)
-- [운영 웹](https://eolssu-web.vercel.app/)
+- [실제 API 명세서](docs/api/API_SPEC.md) · [Swagger 사용 안내](docs/api/SWAGGER.md) · [OpenAPI JSON](docs/api/openapi.json)
+- [프로젝트 백로그](docs/product/17-project-backlog.md)
+- [운영 웹](https://earthuu.vercel.app/)
 
 ## 업데이트 방식
 
