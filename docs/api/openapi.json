@@ -661,7 +661,7 @@
       "post" : {
         "tags" : [ "인증·내 계정" ],
         "summary" : "학교 이메일 인증 및 로그인",
-        "description" : "최대 5회 오입력. 성공 시 eolssu_session과 eolssu_refresh HttpOnly 쿠키 발급.",
+        "description" : "최대 5회 오입력. 성공 시 earthuu_session과 earthuu_refresh HttpOnly 쿠키 발급.",
         "operationId" : "verify",
         "parameters" : [ {
           "name" : "X-Eolssu-Request",
@@ -2901,12 +2901,12 @@
     "securitySchemes" : {
       "sessionCookie" : {
         "type" : "apiKey",
-        "name" : "eolssu_session",
+        "name" : "earthuu_session",
         "in" : "cookie"
       },
       "refreshCookie" : {
         "type" : "apiKey",
-        "name" : "eolssu_refresh",
+        "name" : "earthuu_refresh",
         "in" : "cookie"
       }
     }

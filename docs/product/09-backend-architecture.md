@@ -114,7 +114,7 @@ eolssu-api/
 3. 6자리 코드를 HTML/텍스트 메일로 전송한다. SMTP 오류는 503이다. 성공 후 코드 해시·유효 시간·시도 횟수를 저장한다.
 4. 인증 시 10분 만료·5회 제한을 검사하고 학교 인증 상태를 갱신한다.
 5. SessionService가 refresh용 무작위 32바이트 토큰과 JwtService의 15분 HS256 접근 JWT를 발급한다. DB에는 refresh의 SHA-256 해시를 저장한다.
-6. eolssu_session JWT와 eolssu_refresh 쿠키는 HttpOnly·SameSite=Lax이며 dev/prod에서 Secure=true다. DB 세션은 7일 절대 만료, JWT는 15분 만료 후 refresh 쿠키로 자동 재발급한다.
+6. earthuu_session JWT와 earthuu_refresh 쿠키는 HttpOnly·SameSite=Lax이며 dev/prod에서 Secure=true다. DB 세션은 7일 절대 만료, JWT는 15분 만료 후 refresh 쿠키로 자동 재발급한다.
 7. 프로필 작성 후 참여/생성을 허용한다. 로그인 시 프로필 미완료 회원은 웹에서 프로필 페이지로 이동한다.
 
 JWT 서명·issuer·audience·만료와 DB 세션을 함께 검사한다. 로그아웃 시 DB 세션을 폐기한다. 자세한 동작은 [13-host-auth-monitoring](13-host-auth-monitoring.md)를 따른다. Spring Security 인증 필터 체인은 없으며 각 Controller가 세션과 권한을 검사한다. BCrypt 라이브러리 사용만으로 경로 전체가 보호되는 것은 아니다. CSRF·인증 요청 제한은 2026-10-03 소스에 구현했으며 운영 배포·프록시 IP 검증은 대기 중이다. 전체 세션 회수는 별도 계정 관리 작업에서 다룬다.

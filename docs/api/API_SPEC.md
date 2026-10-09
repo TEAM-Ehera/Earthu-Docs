@@ -8,7 +8,7 @@ local/docker/dev 서버에서 `/swagger-ui/index.html`로 요청/응답 스키�
 
 ## 인증과 응답
 
-학교 이메일 확인 → 가입 → 이메일 코드 인증 → 프로필 작성 순서입니다. 인증·로그인 성공 시 HttpOnly `eolssu_session`(접근 JWT 15분) 및 `eolssu_refresh`(세션 7일) 쿠키를 발급합니다. 접근 쿠키 자체 Max-Age는 7일이며 JWT 만료 후 refresh 쿠키로 자동 재발급합니다. Bearer 인증은 지원하지 않습니다. Swagger에서 로그인 실행 후 같은 서버의 쿠키를 사용하세요. **모든 `/v1/**` 변경 요청은 `X-Eolssu-Request: 1` 헤더가 필수**입니다. 브라우저의 정확한 Origin을 `WEB_ORIGIN`에 허용해야 하며 Swagger API 출처도 개발 환경에 별도로 등록합니다. 외부 웹은 `credentials: "include"`가 필요하며 허용 origin과 SameSite=Lax 정책을 따릅니다.
+학교 이메일 확인 → 가입 → 이메일 코드 인증 → 프로필 작성 순서입니다. 인증·로그인 성공 시 HttpOnly `earthuu_session`(접근 JWT 15분) 및 `earthuu_refresh`(세션 7일) 쿠키를 발급합니다. 접근 쿠키 자체 Max-Age는 7일이며 JWT 만료 후 refresh 쿠키로 자동 재발급합니다. Bearer 인증은 지원하지 않습니다. Swagger에서 로그인 실행 후 같은 서버의 쿠키를 사용하세요. **모든 `/v1/**` 변경 요청은 `X-Eolssu-Request: 1` 헤더가 필수**입니다. 브라우저의 정확한 Origin을 `WEB_ORIGIN`에 허용해야 하며 Swagger API 출처도 개발 환경에 별도로 등록합니다. 외부 웹은 `credentials: "include"`가 필요하며 허용 origin과 SameSite=Lax 정책을 따릅니다.
 
 일반 성공은 `{ "data": ... }`. 가입/재발송은 `message` 객체, activity/참여 신청은 Activity 객체 직접 반환. 204는 본문 없음. 로그아웃은 200·빈 본문. 이미지 조회는 image/jpeg입니다. 오류는 Spring Boot 기본 응답이며 고정된 커스텀 오류 스키마는 없습니다. 검증 실패 400, 로그인 필요 401, 권한 부족 403, 대상 없음 404, 상태 충돌 409, 업무 검증 422, 제한 429를 사용합니다. 각 API의 가능한 오류는 Swagger에 기재했습니다.
 
@@ -67,7 +67,7 @@ local/docker/dev 서버에서 `/swagger-ui/index.html`로 요청/응답 스키�
 - **PATCH /v1/local/reports/{id}**:  local/docker 프로필에서만 활성. 관리자 인증 없는 시연 API. 운영에서는 사용 불가.
 - **POST /v1/auth/register**: 학교 이메일 .ac.kr/.edu만 허용. 비밀번호 8자 이상, UTF-8 기준 72바이트 이하. 6자리 인증 코드 유효기간 10분.
 - **POST /v1/auth/resend**: 재발송 간격 60초. 이미 인증된 회원은 409.
-- **POST /v1/auth/verify**: 최대 5회 오입력. 성공 시 eolssu_session과 eolssu_refresh HttpOnly 쿠키 발급.
+- **POST /v1/auth/verify**: 최대 5회 오입력. 성공 시 earthuu_session과 earthuu_refresh HttpOnly 쿠키 발급.
 - **POST /v1/auth/login**: 인증 완료 계정만 로그인 가능. 성공 시 두 인증 쿠키 발급.
 - **PATCH /v1/me/profile**: 학교 인증 필요. 두 언어는 달라야 함. 참여 중 국적 변경은 409. PATCH지만 필수 프로필 필드 전체 전송.
 - **POST /v1/events**: 학교 인증 및 프로필 완료 필요. 모집 마감은 현재 이후, 시작 이전. 총 정원 1 이상.
