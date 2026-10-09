@@ -8,13 +8,15 @@ type: "index"
 version: "0.8"
 status: "개발·운영 배포 완료 · 실제 가입·참여 검증 대기"
 created: "2026-09-29"
-updated: "2026-10-02"
+updated: "2026-10-08"
 tags:
   - "얼쑤"
   - "문서/index"
 ---
 
 # 얼쑤 문서 홈
+
+- [프로젝트 백로그 · 2026-10-07](17-project-backlog.md) — 완료 작업, 구현·배포 대기 항목, 우선순위와 일정 제안.
 
 > [!abstract] 얼쑤 / 에헤라디야
 > 한국 소재 대학교의 국제학생과 한국 학생이, 인증된 대학생이 연 대면 모임에서 한국 문화·대학 생활을 함께 경험하는 서비스.
@@ -24,30 +26,32 @@ tags:
 
 | 문서 | 용도 | 버전 |
 |---|---|---|
-| [PRD](01-prd.md) | 서비스·대상·플랫폼·핵심 경험·추가 회의 | v0.9 |
-| [정보구조도](02-ia.md) | 웹/앱 흐름·화면 사전·마이 메뉴 | v0.9 |
-| [기능명세서](03-functional-spec.md) | 기능 20개·상태·권한·예외·검증 시나리오 | v0.9 |
-| [ERD·데이터 사전](04-erd.md) | 인증·이벤트 버전·정원·소통·운영 데이터 · [ERDCloud DDL](04-erd-erdcloud.sql) | v0.9 |
-| [API 명세서](05-api-spec.md) | 요청·응답·권한·오류·운영 계약 초안 | v0.9 |
-| [결정 로그](06-decisions.md) | 확정사항·미결정 정책·기존 제안 변경 내역 | v0.9 |
-| [기술 스택·배포](07-tech-stack.md) | Next.js·Spring Boot·별도 저장소·배포 구성 | v0.9 |
-| [작업 현황과 다음 개발](08-work-status.md) | 구현·미구현 구분, 웹 화면/API, 배포 상태, P0/P1/P2 작업 | v1.2 |
-| [백엔드 폴더 구조와 아키텍처](09-backend-architecture.md) | 실제 패키지·동작·DB·환경, 다음 책임 분리, 코드 읽기 순서 | v1.1 |
-| [팀 Gmail 인증 메일 설정](10-gmail-setup.md) | 발신 계정 입력·SMTP 확인·적용·실제 인증 검증 | v1.1 |
+| [[01-prd\|PRD]] | 서비스·대상·플랫폼·핵심 경험·추가 회의 | v0.9 |
+| [[02-ia\|정보구조도]] | 웹/앱 흐름·화면 사전·마이 메뉴 | v0.9 |
+| [[03-functional-spec\|기능명세서]] | 기능 20개·상태·권한·예외·검증 시나리오 | v0.9 |
+| [[04-erd\|ERD·데이터 사전]] | 인증·이벤트 버전·정원·소통·운영 데이터 · [[04-erd-erdcloud.sql\|ERDCloud DDL]] | v0.9 |
+| [[05-api-spec\|API 명세서]] | 요청·응답·권한·오류·운영 계약 초안 | v0.9 |
+| [[06-decisions\|결정 로그]] | 확정사항·미결정 정책·기존 제안 변경 내역 | v0.9 |
+| [[07-tech-stack\|기술 스택·배포]] | Next.js·Spring Boot·별도 저장소·배포 구성 | v0.9 |
+| [[08-work-status\|작업 현황과 다음 개발]] | 구현·미구현 구분, 웹 화면/API, 배포 상태, P0/P1/P2 작업 | v1.2 |
+| [[09-backend-architecture\|백엔드 폴더 구조와 아키텍처]] | 실제 패키지·동작·DB·환경, 다음 책임 분리, 코드 읽기 순서 | v1.1 |
+| [[10-gmail-setup\|팀 Gmail 인증 메일 설정]] | 발신 계정 입력·SMTP 확인·적용·실제 인증 검증 | v1.1 |
+| [[16-account-management|계정 관리·탈퇴 데이터 처리]] | 실제 API·삭제/익명화/유지 범위·로컬 검증·운영 확인 대기 | 2026-10-03 |
 
-| [개발 배포](11-development-deployment.md) | develop Preview·개발 API·검증 기록 | 2026-10-01 |
-| [운영 배포](12-production-deployment.md) | Production API 연결·404 원인·분리 구성·검증 | 2026-10-01 |
+| [[11-development-deployment\|개발 배포]] | develop Preview·개발 API·검증 기록 | 2026-10-01 |
+| [[12-production-deployment\|운영 배포]] | Production API 연결·404 원인·분리 구성·검증 | 2026-10-01 |
 
 ## 이번 통합본
 
 - **확정:** Java·Spring Boot, 프론트·백 별도 비공개 저장소, 등록 즉시 공개. 개발·운영 API·DB·DB 계정·미디어는 분리하고 현재는 무료 VM을 공유한다. 이미지 압축은 구현했으며 R2 이관은 향후 작업이다.
 - **조건부:** Vercel 무료 플랜, Oracle 무료 자원 확보, Gateway 제품·서비스 분리·CI 세부 도구.
 - **회의 필요:** 공개 후 수정·취소·참가자 변경 안내, 참가·출석·리뷰 세부 정책.
-- **구현 상태:** 비공개 웹·API 저장소와 로컬 가입·학교 메일 인증·프로필·모임·댓글·관심·참여·후기·신고를 연결했다. Vercel 개발·운영 웹과 Oracle API·DB를 배포했다. 운영 API 연결 설정 누락으로 발생한 404를 해결했고 웹을 경유한 조회·학교 메일 판별을 확인했다. Gmail SMTP 인증은 성공했으며 실제 학교 메일 수신·가입·프로필·참여 흐름은 검증 대기다. R2·소셜 로그인·사후 운영자 권한·채팅은 미구현이다. 상세 현황과 우선순위는 [08-work-status](08-work-status.md), 기능별 패키지 정리는 [09-backend-architecture](09-backend-architecture.md)를 기준으로 확인한다.
+- **구현 상태:** 비공개 웹·API 저장소와 로컬 가입·학교 메일 인증·프로필·모임·댓글·관심·참여·후기·신고를 연결했다. Vercel 개발·운영 웹과 Oracle API·DB를 배포했다. 운영 API 연결 설정 누락으로 발생한 404를 해결했고 웹을 경유한 조회·학교 메일 판별을 확인했다. Gmail SMTP 인증은 성공했으며 실제 학교 메일 수신·가입·프로필·참여 흐름은 검증 대기다. R2·소셜 로그인·사후 운영자 권한·채팅은 미구현이다. 상세 현황과 우선순위는 [[08-work-status]], 기능별 패키지 정리는 [[09-backend-architecture]]를 기준으로 확인한다.
+- **계정 관리 (2026-10-03):** 비밀번호 재설정·전체 기기 로그아웃·탈퇴/데이터 처리의 소스 구현과 로컬 검증을 완료했다. 운영 배포·실제 메일 수신·Flyway V5 검증은 대기다. [[16-account-management|기능·API·데이터 처리 범위]].
 
 ## 최신 반영
 
-- 팀 경험에 맞춰 Java·Spring Boot 선택. 현재 개발·운영은 VM·Caddy·PostgreSQL 프로세스를 공유하고 API·DB 계정·DB·미디어 볼륨을 분리한다. 별도 VM·R2 이관은 향후 작업이며 현재 Caddy를 Gateway로 사용한다
+- 팀 경험에 맞춰 Java·Spring Boot 선택. 현재 개발·운영은 VM·Caddy·PostgreSQL 프로세스를 공유하고 API·DB 계정·DB·미디어 볼륨을 분리한다. 별도 VM·R2·Gateway는 향후 작업
 - 현재 썸네일은 API별 파일 볼륨에 저장. JPEG 압축·크기/픽셀 제한은 구현. R2 이관·공개/비공개 저장 분리는 미구현
 - Next.js → Vercel, Spring Boot → Docker → Oracle Cloud, 프론트/백 별도 Git 저장소와 자동 배포
 - Apple·Google / 학교 메일+비밀번호 로그인, 가입 시 학교 메일 인증
@@ -62,22 +66,22 @@ tags:
 ## 문서 상태
 
 > [!important] 확정과 제안을 구분
-> 제품 설계 문서와 실제 구현 현황 문서를 분리했다. 문서별 버전은 위 표를 기준으로 확인한다. 게시 전 심사를 제거하고 [등록 즉시 공개](06-decisions.md#등록-즉시-공개-결정)로 확정했다. 단, 참가 방식·국적 분류 세부·인기 계산·출석/리뷰 자격 등은 [추가 결정 항목](06-decisions.md#추가-결정이-필요한-항목)이다. API·ERD는 이런 항목에 제안값을 사용한 검토용 설계다.
+> 제품 설계 문서와 실제 구현 현황 문서를 분리했다. 문서별 버전은 위 표를 기준으로 확인한다. 게시 전 심사를 제거하고 [[06-decisions#등록 즉시 공개 결정|등록 즉시 공개]]로 확정했다. 단, 참가 방식·국적 분류 세부·인기 계산·출석/리뷰 자격 등은 [[06-decisions#추가 결정이 필요한 항목|추가 결정 항목]]이다. API·ERD는 이런 항목에 제안값을 사용한 검토용 설계다.
 
-PRD에는 가설·측정 계획·출시 조건의 상세 수치를 넣지 않고 회의 항목으로 유지한다. 현재 MVP는 제품 명세 전체를 구현하지 않는다. API·ERD 설계와 현재 구현의 차이는 [08-work-status](08-work-status.md)·[09-backend-architecture](09-backend-architecture.md)에 기록했다. `eolssu-web/README.md`와 `eolssu-api/README.md`의 구현 범위를 확인한다.
+PRD에는 가설·측정 계획·출시 조건의 상세 수치를 넣지 않고 회의 항목으로 유지한다. 현재 MVP는 제품 명세 전체를 구현하지 않는다. API·ERD 설계와 현재 구현의 차이는 [[08-work-status]]·[[09-backend-architecture]]에 기록했다. `eolssu-web/README.md`와 `eolssu-api/README.md`의 구현 범위를 확인한다.
 
 ## 옵시디언 사용
 
 문서 속성에서 버전·상태를 확인하고 위키링크·백링크·목차로 탐색한다. 정보구조도와 ERD는 Mermaid 원본이며 읽기 보기에서 확인한다. 플러그인 전용 기능 없이 기본 Markdown·콜아웃·위키링크를 사용한다.
 
-- [13-host-auth-monitoring](13-host-auth-monitoring.md) — 주최자 관리·이미지 한계·JWT·Gateway·Grafana·지연 조사.
-
-- [Grafana 접속 안내](14-grafana-https-access.md) — 개인 Viewer 계정 발급을 운영 담당자에게 요청한다. 접속 정보는 별도 전달한다.
-
-> 2026-10-02 최신 변경은 13번·14번 문서와 팀 공유 안내를 우선 확인한다. 과거 배포 문서는 당시 기록이며 현재 상태와 다를 수 있다. 공개 저장소용으로 접속 IP·관리자 식별자를 제외했다.
+- [[13-host-auth-monitoring]] — 주최자 관리·이미지 한계·JWT·Gateway·Grafana·지연 조사.
 
 - [카카오 장소 검색·Redis 배포](15-kakao-place-deployment.md) — 캐시 범위·설정·검증·롤백.
 
 ## 2026-10-02 개발 현황 갱신
 
 주최자 관리·JWT 갱신·이미지 압축·서버 관측과 카카오 장소 검색·Redis 배포를 작업 현황에 반영했다. 운영 장소 검색·지도 표시는 확인했으며 실제 가입·모임 생성·다른 계정 참여 전체 흐름은 검증 대기다. Swagger·관리자 인수인계 및 상세 화면 수정의 미커밋 상태도 작업 현황에 구분했다.
+
+## API 문서 갱신 · 2026-10-08
+
+[실제 API 계약](../../eolssu-api/docs/api/API_SPEC.md) · [Swagger 사용·검증](../../eolssu-api/docs/api/SWAGGER.md) · [OpenAPI 다운로드](../../eolssu-api/docs/api/openapi.json). 장소·계정·삭제 계약과 변경 요청 보호 헤더를 반영했습니다. 배포·메일 수신 검증은 별도입니다.
