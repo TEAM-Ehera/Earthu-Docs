@@ -86,4 +86,4 @@ sudo docker compose --project-name eolssu-prod --env-file .env.prod -f compose.p
 
 API는 10월 8일 운영 기록과 동일한 로컬 보관 이미지 `sha256:754e757a57e8a2996b8ab2901096f992fdb66f970730c5b22359fbea60137a47`에서 JAR를 추출했다. 실제 배포된 `eolssu_session`·`eolssu_refresh` 쿠키 이름을 유지해 빌드한 소스의 클래스·리소스 83개가 이미지 내용과 바이트 단위로 모두 일치한다. 로컬의 미배포 `earthuu_*` 쿠키 변경은 별도 후속 PR로 분리하고 배포 브랜치에는 포함하지 않는다. 쿠키 이름 변경을 배포하려면 기존 로그인 유지 정책을 검토하고 API 배포와 함께 적용해야 한다.
 
-Java 21 컨테이너의 Maven verify는 49건 중 47건 통과·2건 제외, 웹 lint/build와 격리 DB/미디어 복원·손상 dump 거부·실패 후 API 재시작 드릴은 통과했다. 운영·개발 readiness는 모두 UP이었다. 이 날짜의 SSH 접속은 시간 초과이므로 원격 실행 이미지·Compose를 다시 검사한 것으로 표현하지 않는다. 원격 이미지 비교 근거는 직전 배포 기록과 보관 이미지이며, 검증 상세는 API 저장소의 `docs/deployment/*source-reconciliation-2026-10-09.json`에 기록한다.
+Java 21 컨테이너의 Maven verify는 49건 중 47건 통과·2건 제외, 웹 lint/build와 격리 DB/미디어 복원·손상 dump 거부·실패 후 API 재시작 드릴은 통과했다. 운영·개발 readiness는 모두 UP이었다. 이 날짜의 SSH 접속은 시간 초과이므로 원격 실행 이미지·Compose를 다시 검사한 것으로 표현하지 않는다. 원격 이미지 비교 근거는 직전 배포 기록과 보관 이미지이며, 상세 해시 보고서는 로컬 `docs/deployment/*source-reconciliation-2026-10-09.json`에 보관하고 Git 추적에서 제외한다.
