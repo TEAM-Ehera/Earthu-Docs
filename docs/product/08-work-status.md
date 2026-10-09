@@ -17,7 +17,7 @@ tags: ["얼쑤", "개발/현황", "개발/로드맵"]
 > Vercel 개발·운영 웹과 Oracle 개발·운영 API가 연결됐다. 운영 웹의 API_ORIGIN 누락으로 발생한 404를 수정하고 main 운영 배포를 완료했다.
 > 2026-10-01 원격 서버와 운영 웹을 통해 HTTPS·DB 마이그레이션·목록/학교 메일 조회를 확인했다. 실제 학교 인증·가입·프로필·작성·참여는 사용자가 검증할 예정이다.
 
-관련: [문서 홈](README.md) · [백엔드 구조와 동작](09-backend-architecture.md) · [기술 스택·배포](07-tech-stack.md) · [결정 로그](06-decisions.md)
+관련: [[README|문서 홈]] · [[09-backend-architecture|백엔드 구조와 동작]] · [[07-tech-stack|기술 스택·배포]] · [[06-decisions|결정 로그]]
 
 ## 1. 서비스와 개발 방향
 
@@ -41,7 +41,7 @@ tags: ["얼쑤", "개발/현황", "개발/로드맵"]
 | 로그인 | 학교 이메일+비밀번호, BCrypt, 15분 서명 JWT·7일 refresh 쿠키, 자동 접근 갱신·로그아웃 | Apple·Google은 준비 중 버튼. 소셜 계정 연결 미구현 |
 | 프로필 | 인증 후 별도 `/auth/profile`, 이름·대학·국적·언어·성별·관심사, 수정 | 알려진 6개 도메인 자동 대학 매핑. 미인식 대학은 직접 입력으로 실제 대학 검색 기능 없음 |
 | 언어·테마 | 한국어/영어 UI, 라이트/다크, 제2언어 없음 | 언어·테마는 브라우저 저장. 계정 간 동기화 없음 |
-| 호스트·모임 작성 | 인증·프로필 완료 검사, 서버가 호스트 설정, 한/국제학생 정원, 한/영 설명, 장소 텍스트, 썸네일 | 지도 검색 없음. 등록 즉시 `published` 공개. 사용자 작성 영어 제목 입력 미지원 |
+| 호스트·모임 작성 | 인증·프로필 완료 검사, 서버가 호스트 설정, 한/국제학생 정원, 한/영 설명, 장소 텍스트, 썸네일 | 카카오 장소 검색·선택 및 Redis 캐시 구현. 개발·운영 배포 및 운영 검색·지도 표시 확인. 등록 즉시 `published` 공개. 사용자 작성 영어 제목 입력 미지원 |
 | 이미지 | 인증 업로드, 파일 크기·이미지 형식·픽셀 수 검사, JPEG 저장/조회, Docker volume | 현재 로컬 파일 저장. 1600px JPEG 압축·원본 20MiB/48MP·환경별 10GiB 적용. R2·소유자 메타데이터·미사용 파일 정리는 미구현 |
 | 관심 | 계정별 추가·해제·목록, 관심 수 기반 인기 정렬 | 정렬 시 반복 집계 쿼리 개선 필요 |
 | 참여 | 공개 모임 참여·취소·내 참여 목록, 그룹별 정원, 참여 시 DB 행 잠금 | 샘플 3개 데모 참여 가능. 국적 문자열로 그룹 분류. 출석 확인 없음 |
@@ -76,9 +76,9 @@ tags: ["얼쑤", "개발/현황", "개발/로드맵"]
 | Vercel | `thesoftbellys-projects/eolssu-web`, [웹 주소](https://earthuu.vercel.app/). 운영 main 배포 HAm392tAahWHmswq9ifh4FvpEfeC Ready, develop Preview 별도 |
 | Vercel 환경 변수 | `NEXT_PUBLIC_API_URL=same-origin`. Production API_ORIGIN은 운영 API, Preview develop 범위 값은 개발 API로 설정·재배포 완료 |
 | Oracle 지역 | Osaka `ap-osaka-1`. A1 용량 부족 후 E2.1.Micro 2대 생성 |
-| API VM | `eolssu-prod-api`, Ubuntu 24.04, 1/8 OCPU 기본·버스트 / 1 GB, 내부 IP `[접속 IP 비공개]` |
-| DB VM | `eolssu-prod-db`, Ubuntu 24.04 Minimal, 1/8 OCPU 기본·버스트 / 1 GB, 내부 IP `[접속 IP 비공개]` |
-| 네트워크 | `eolssu-vcn` / `eolssu-public`, `[접속 IP 비공개]`. API 공인 IP `[접속 IP 비공개]`, DB 공인 IP 없음. SSH 관리자 IP 제한, DB 5432는 API 내부 IP만 허용 |
+| API VM | `eolssu-prod-api`, Ubuntu 24.04, 1/8 OCPU 기본·버스트 / 1 GB, 내부 IP `10.0.0.46` |
+| DB VM | `eolssu-prod-db`, Ubuntu 24.04 Minimal, 1/8 OCPU 기본·버스트 / 1 GB, 내부 IP `10.0.0.58` |
+| 네트워크 | `eolssu-vcn` / `eolssu-public`, `10.0.0.0/24`. API 공인 IP `129.225.175.229`, DB 공인 IP 없음. SSH 관리자 IP 제한, DB 5432는 API 내부 IP만 허용 |
 | 운영 설치 | Docker·개발/운영 API·DB·Gmail 설정·HTTPS·Vercel 전달 연결 완료 |
 | 환경 분리 | API VM과 DB VM 두 대를 개발/운영이 공유한다. dev/prod API 컨테이너·DB·계정·미디어 볼륨 분리. 별도 VM 분리 미완료 |
 | 이미지 저장 | 현재 파일 volume. Cloudflare R2는 선택한 향후 방향 |
@@ -86,7 +86,7 @@ tags: ["얼쑤", "개발/현황", "개발/로드맵"]
 | DB | 런타임 8개 테이블. 개발·운영 DB 모두 Flyway V1/V2/V3/V4 적용 성공, JPA validate 통과 |
 
 > [!warning] 설계 ERD와 실제 DB 구분
-> [04-erd](04-erd.md)와 ERDCloud용 SQL은 확장 서비스 설계다. 현재 코드의 8개 테이블과 일치하지 않는다. 운영 DB에 설계 SQL을 그대로 실행하지 않는다. 변경은 실제 스키마를 기준으로 새 Flyway 마이그레이션으로 적용한다.
+> [[04-erd]]와 ERDCloud용 SQL은 확장 서비스 설계다. 현재 코드의 8개 테이블과 일치하지 않는다. 운영 DB에 설계 SQL을 그대로 실행하지 않는다. 변경은 실제 스키마를 기준으로 새 Flyway 마이그레이션으로 적용한다.
 
 배포 파일:
 
@@ -99,7 +99,7 @@ tags: ["얼쑤", "개발/현황", "개발/로드맵"]
 - `deploy/Caddyfile.shared`: 개발·운영 두 호스트를 각각 API에 연결. 단일 호스트 설정으로 덮어쓰지 않는다.
 - `deploy/deployment.env.example`, `deploy/README.md`: 배포 입력값과 순서. 예시 IP는 실제 설정 시 재확인.
 
-운영·개발 주소와 실제 배포 식별값은 [12-production-deployment](12-production-deployment.md)·[11-development-deployment](11-development-deployment.md)를 확인한다.
+운영·개발 주소와 실제 배포 식별값은 [[12-production-deployment]]·[[11-development-deployment]]를 확인한다.
 
 ## 4. 이번 정리에서 변경한 코드
 
@@ -107,7 +107,7 @@ tags: ["얼쑤", "개발/현황", "개발/로드맵"]
 - 심사 제거 결정에 따라 시연 승인 Controller를 삭제했다. 신고 처리 Controller는 유지한다.
 - 패키지 간 참조를 명시적 import로 연결했다. 신고 응답 생성 메서드는 시연 패키지에서도 사용할 수 있도록 공개했다.
 - 엔트리포인트는 최상위 패키지에 유지했다. API URL·DB 테이블·업무 정책은 유지했다.
-- Controller의 업무 로직을 Service로 모두 옮긴 것은 아니다. 다음 단계의 책임 분리는 [백엔드 구조 문서](09-backend-architecture.md#6.-다음-구조-개선)에 기록했다.
+- Controller의 업무 로직을 Service로 모두 옮긴 것은 아니다. 다음 단계의 책임 분리는 [[09-backend-architecture#6. 다음 구조 개선|백엔드 구조 문서]]에 기록했다.
 
 ## 5. 앞으로 할 일
 
@@ -131,9 +131,11 @@ tags: ["얼쑤", "개발/현황", "개발/로드맵"]
 - [ ] 대학 검색, 국적/언어 코드 정규화, 공백 프로필 방지, 참여 그룹 분류 정책 확정.
 - [x] 카카오 장소 검색·선택·지도 미리보기·좌표·주소·시군구 코드 저장 및 개발·운영 배포.
 - [ ] 사용자 작성 한/영 제목 입력, 운영에서 새 모임 생성 후 장소 저장·재조회 확인.
-- [x] 공개 모임 수정·취소·신청자 조회·취소 사유 표시 구현. 모집 마감/중단 상태와 변경 알림은 후속 작업.
+- [x] 주최자 모임 수정·취소·신청자 조회와 취소 사유 표시.
+- [ ] 참가자 변경 안내, 모집 마감/중단 상태와 변경 범위·기한 정책.
 - [ ] 이벤트 목록/댓글/후기 페이지네이션, DB 조건 검색·정렬, 집계 쿼리·인덱스 개선.
-- [ ] 이미지 리사이즈·압축·변환 동시 제한은 구현. 소유권/메타데이터/미사용 이미지 정리·R2 이관은 남은 작업.
+- [x] 이미지 리사이즈·JPEG 압축, 파일 크기·픽셀 수 제한.
+- [ ] 이미지 소유권/메타데이터/미사용 파일 정리, R2 이관.
 - [x] 비밀번호 재설정, 전체 기기 세션 회수, 탈퇴·데이터 삭제/익명화 및 처리 범위 안내: 소스 구현·로컬 검증 완료.
 - [ ] 계정 관리 운영 배포, PostgreSQL Flyway V5 적용, 실제 학교 메일 재설정·탈퇴 흐름 검증.
 - [ ] 백업·외부 로그·신고 증거 보관/삭제 정책과 업로드 소유권·파일 정리.
@@ -158,23 +160,23 @@ tags: ["얼쑤", "개발/현황", "개발/로드맵"]
 
 ## 2026-10-01 Gmail 설정 반영
 
-팀 계정의 Google 앱 비밀번호를 Git 제외 로컬 `.env`에 입력했다. Gmail STARTTLS 연결·SMTP 계정 인증을 확인했고 API 컨테이너를 재빌드·재시작했다. 실제 학교 메일 수신·코드 입력 검증은 남아 있다. 당시에는 Oracle/Vercel 연결 전이었다. 이후 개발·운영 연결을 완료했으며 현재 상태는 [12-production-deployment](12-production-deployment.md)를 따른다. 자세한 설정·확인 방법은 [10-gmail-setup](10-gmail-setup.md)을 따른다.
+팀 계정의 Google 앱 비밀번호를 Git 제외 로컬 `.env`에 입력했다. Gmail STARTTLS 연결·SMTP 계정 인증을 확인했고 API 컨테이너를 재빌드·재시작했다. 실제 학교 메일 수신·코드 입력 검증은 남아 있다. 당시에는 Oracle/Vercel 연결 전이었다. 이후 개발·운영 연결을 완료했으며 현재 상태는 [[12-production-deployment]]를 따른다. 자세한 설정·확인 방법은 [[10-gmail-setup]]을 따른다.
 
 ## 2026-10-01 즉시 공개와 develop 배포
 
-게시 전 심사를 제거하고 새 모임의 기본 상태를 published로 변경했다. 승인 API·심사 UI를 삭제하고 로컬 신고 관리만 유지한다. Flyway V2와 local/docker 초기 변환으로 기존 approved/submitted/reviewing을 공개한다. removed/rejected/cancelled는 유지한다. 두 저장소의 develop 브랜치에 변경을 올리고 API 이미지 빌드/조건부 SSH 개발 배포와 웹 검증 워크플로를 구성한다. 이후 원격 개발 배포와 웹 통신을 확인했다. [11-development-deployment](11-development-deployment.md)를 따른다.
+게시 전 심사를 제거하고 새 모임의 기본 상태를 published로 변경했다. 승인 API·심사 UI를 삭제하고 로컬 신고 관리만 유지한다. Flyway V2와 local/docker 초기 변환으로 기존 approved/submitted/reviewing을 공개한다. removed/rejected/cancelled는 유지한다. 두 저장소의 develop 브랜치에 변경을 올리고 API 이미지 빌드/조건부 SSH 개발 배포와 웹 검증 워크플로를 구성한다. 이후 원격 개발 배포와 웹 통신을 확인했다. [[11-development-deployment]]를 따른다.
 
 ## 2026-10-01 Oracle 개발 배포 완료
 
-사용자 합의에 따라 기존 두 Micro VM을 개발 환경으로 사용했다. 개발 API HTTPS health UP, 개발 PostgreSQL 및 Flyway V1/V2, Gmail SMTP 인증을 확인했다. Vercel develop Preview에만 API_ORIGIN을 설정했다. 상세 구성·검증 범위·남은 작업은 [11-development-deployment](11-development-deployment.md)을 따른다. 이후 같은 VM에 분리된 운영 API·DB·미디어를 추가했다. 현재 상태는 [12-production-deployment](12-production-deployment.md)를 따른다.
+사용자 합의에 따라 기존 두 Micro VM을 개발 환경으로 사용했다. 개발 API HTTPS health UP, 개발 PostgreSQL 및 Flyway V1/V2, Gmail SMTP 인증을 확인했다. Vercel develop Preview에만 API_ORIGIN을 설정했다. 상세 구성·검증 범위·남은 작업은 [[11-development-deployment]]을 따른다. 이후 같은 VM에 분리된 운영 API·DB·미디어를 추가했다. 현재 상태는 [[12-production-deployment]]를 따른다.
 
 ## 운영 연결 완료 (2026-10-01)
 
-운영 API·별도 DB를 추가하고 Production API_ORIGIN 설정 및 웹 main 배포를 완료했다. 운영 웹의 모임/학교 메일 조회 200, 빈 로그인·가입 입력 400을 확인했다. 최신 상태는 [12-production-deployment](12-production-deployment.md)를 따른다.
+운영 API·별도 DB를 추가하고 Production API_ORIGIN 설정 및 웹 main 배포를 완료했다. 운영 웹의 모임/학교 메일 조회 200, 빈 로그인·가입 입력 400을 확인했다. 최신 상태는 [[12-production-deployment]]를 따른다.
 
 ## 2026-10-02 주최자 관리와 서버 관측
 
-수정·취소·신청자 조회, JWT 자동 갱신, 이미지 압축·한도 완화, Caddy Gateway와 Grafana/Prometheus를 개발·운영에 적용했다. 네 대상의 지표 수집과 웹 API 연결을 확인했다. 실제 한도·성능 표본·확인 범위와 접속 방법은 [13-host-auth-monitoring](13-host-auth-monitoring.md)를 따른다.
+수정·취소·신청자 조회, JWT 자동 갱신, 이미지 압축·한도 완화, Caddy Gateway와 Grafana/Prometheus를 개발·운영에 적용했다. 네 대상의 지표 수집과 웹 API 연결을 확인했다. 실제 한도·성능 표본·확인 범위와 접속 방법은 [[13-host-auth-monitoring]]를 따른다.
 
 ## 2026-10-02 카카오 장소 검색
 
@@ -205,4 +207,4 @@ tags: ["얼쑤", "개발/현황", "개발/로드맵"]
 
 `AccountManagementTests` 8개가 통과했다. 코드 만료·일회성·5회 오입력 영속화, 전체 세션 폐기·다른 회원 세션 유지, 탈퇴 제한·DB 삭제/익명화, HTTP 인증·CSRF·탈퇴 동의를 확인했다. 웹 lint·타입 검사·프로덕션 빌드도 통과했다. H2와 모의 SMTP 검증이며 실제 학교 메일 수신, 운영 PostgreSQL의 Flyway V5 적용 및 운영 배포는 아직 검증하지 않았다.
 
-상세: [계정 관리·탈퇴 데이터 처리](16-account-management.md)
+상세: [[16-account-management|계정 관리·탈퇴 데이터 처리]]

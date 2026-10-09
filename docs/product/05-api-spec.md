@@ -16,21 +16,21 @@ tags:
 
 # API 명세서 — 얼쑤 v0.9
 
-[← 얼쑤 문서 홈](README.md)
+[[README|← 얼쑤 문서 홈]]
 
 > [!abstract]- 문서 목차
-> - [공통 계약](05-api-spec.md#공통-계약)
-> - [인증·학교 확인·프로필](05-api-spec.md#인증·학교-확인·프로필)
-> - [홈·검색·카드·상세](05-api-spec.md#홈·검색·카드·상세)
-> - [신청·마이 이벤트·출석](05-api-spec.md#신청·마이-이벤트·출석)
-> - [생성·즉시 공개](05-api-spec.md#생성·즉시-공개)
-> - [공개·비공개 댓글](05-api-spec.md#공개·비공개-댓글)
-> - [앱 공지방·호스트 개별 방](05-api-spec.md#앱-공지방·호스트-개별-방)
-> - [리뷰](05-api-spec.md#리뷰)
-> - [폐기·신고·운영 조치](05-api-spec.md#폐기·신고·운영-조치)
-> - [마이·정보 패널·공지·지원](05-api-spec.md#마이·정보-패널·공지·지원)
-> - [이미지 업로드와 공개](05-api-spec.md#이미지-업로드와-공개)
-> - [계약 확인 항목](05-api-spec.md#계약-확인-항목)
+> - [[#공통 계약|공통 계약]]
+> - [[#인증·학교 확인·프로필|인증·학교 확인·프로필]]
+> - [[#홈·검색·카드·상세|홈·검색·카드·상세]]
+> - [[#신청·마이 이벤트·출석|신청·마이 이벤트·출석]]
+> - [[#생성·즉시 공개|생성·즉시 공개]]
+> - [[#공개·비공개 댓글|공개·비공개 댓글]]
+> - [[#앱 공지방·호스트 개별 방|앱 공지방·호스트 개별 방]]
+> - [[#리뷰|리뷰]]
+> - [[#폐기·신고·운영 조치|폐기·신고·운영 조치]]
+> - [[#마이·정보 패널·공지·지원|마이·정보 패널·공지·지원]]
+> - [[#이미지 업로드와 공개|이미지 업로드와 공개]]
+> - [[#계약 확인 항목|계약 확인 항목]]
 
 > [!note] 제안 계약
 
@@ -38,7 +38,7 @@ tags:
 
 개발·운영은 독립 API origin·DB·토큰 키·업로드 버킷을 사용한다. 계약과 경로는 공통이며 클라이언트가 임의로 요청 body의 env 값으로 운영 대상을 선택하게 하지 않는다. Java·Spring Boot 전환으로 기존 JSON snake_case·오류 형식·상태 코드를 바꾸지 않는다. Java 필드명/기본 직렬화 및 예외 응답을 명시적으로 매핑한다.
 
-Gateway는 해당 환경의 API로만 라우팅한다. Gateway 도입으로 제품 경로를 변경하지 않으며 데이터 권한·정원·공개 권한 판정은 Spring Boot API가 담당한다. 운영/개발 origin 및 구체적인 Gateway 제품은 [기술 문서](07-tech-stack.md#Gateway와-서비스-분리)를 따른다.
+Gateway는 해당 환경의 API로만 라우팅한다. Gateway 도입으로 제품 경로를 변경하지 않으며 데이터 권한·정원·공개 권한 판정은 Spring Boot API가 담당한다. 운영/개발 origin 및 구체적인 Gateway 제품은 [[07-tech-stack#Gateway와 서비스 분리|기술 문서]]를 따른다.
 
 Base path `/v1`, JSON·snake_case, UUID ID, UTC timestamp. 성공 `{data:...}`, 목록 `{data:[],page:{next_cursor:null,has_more:false}}`, 204는 body 없음. 목록 공통 query는 cursor·limit(기본 20, 최대 50)·locale(ko/en). 날짜·모집 상태는 서버 시각과 event.timezone 기준이다.
 
@@ -75,7 +75,7 @@ Base path `/v1`, JSON·snake_case, UUID ID, UTC timestamp. 성공 `{data:...}`, 
 | GET `/v1/me/account/data-policy` | 로그인 | 200 `{data:{deleted,anonymized,retained,requirement}}` |
 | DELETE `/v1/me/account` | 로그인, `{password,confirmed:true}` | 204 탈퇴·데이터 처리 |
 
-코드 10분·5회 오입력·재발송 60초, IP/이메일 요청 제한을 적용한다. 재설정 비밀번호는 8자 이상·UTF-8 72바이트 이하다. 탈퇴 시 예정된 공개 주최 모임이 있으면 409, 비밀번호 불일치는 403, 동의 누락은 400이다. 로컬 검증 완료이며 운영 적용·실제 수신 검증은 대기다. 삭제·유지 범위와 검증 상세는 [계정 관리·탈퇴 데이터 처리](16-account-management.md)를 따른다.
+코드 10분·5회 오입력·재발송 60초, IP/이메일 요청 제한을 적용한다. 재설정 비밀번호는 8자 이상·UTF-8 72바이트 이하다. 탈퇴 시 예정된 공개 주최 모임이 있으면 409, 비밀번호 불일치는 403, 동의 누락은 400이다. 로컬 검증 완료이며 운영 적용·실제 수신 검증은 대기다. 삭제·유지 범위와 검증 상세는 [[16-account-management|계정 관리·탈퇴 데이터 처리]]를 따른다.
 
 ### 확장 목표 계약
 
@@ -296,13 +296,13 @@ JPEG/PNG/WebP 최대 5MB와 별도 픽셀 수 제한을 초기 제안으로 둔�
 
 ## 연결 문서
 
-- [얼쑤 문서 홈](README.md)
-- [얼쑤 PRD](01-prd.md)
-- [얼쑤 정보구조도](02-ia.md)
-- [얼쑤 기능명세서](03-functional-spec.md)
-- [얼쑤 ERD](04-erd.md)
-- [얼쑤 결정 로그](06-decisions.md)
-- [얼쑤 기술 스택·배포](07-tech-stack.md)
+- [[README|얼쑤 문서 홈]]
+- [[01-prd|얼쑤 PRD]]
+- [[02-ia|얼쑤 정보구조도]]
+- [[03-functional-spec|얼쑤 기능명세서]]
+- [[04-erd|얼쑤 ERD]]
+- [[06-decisions|얼쑤 결정 로그]]
+- [[07-tech-stack|얼쑤 기술 스택·배포]]
 
 ## 현재 로컬 API 구현 메모 (2026-09-30)
 
@@ -343,13 +343,13 @@ JPEG/PNG/WebP 최대 5MB와 별도 픽셀 수 제한을 초기 제안으로 둔�
 | `GET /v1/me/participations`, `/favorites`, `/reports` | 내 참여·관심·신고 목록 |
 | `GET /v1/local/reports`, `PATCH /v1/local/reports/{id}` | 로컬 전용 신고 목록/처리. 관리자 인증 없음 |
 
-로컬 `docker`/`local` 프로필의 무인증 신고 처리 API를 공개 서버에 배포하지 않는다. 데모 참여는 실제 예약·알림·호스트 연결이 없고, 후기 자격은 출석이 아니라 활성 참여 이력으로 판정한다. 정식 정책은 [결정 로그](06-decisions.md)에서 확정해야 한다.
+로컬 `docker`/`local` 프로필의 무인증 신고 처리 API를 공개 서버에 배포하지 않는다. 데모 참여는 실제 예약·알림·호스트 연결이 없고, 후기 자격은 출석이 아니라 활성 참여 이력으로 판정한다. 정식 정책은 [[06-decisions|결정 로그]]에서 확정해야 한다.
 
 > [!info] 실제 구현과 구조
-> 설계와 현재 코드의 차이는 [작업 현황과 다음 개발](08-work-status.md), 실제 패키지·동작·런타임 DB는 [백엔드 아키텍처](09-backend-architecture.md)에서 확인한다.
+> 설계와 현재 코드의 차이는 [[08-work-status|작업 현황과 다음 개발]], 실제 패키지·동작·런타임 DB는 [[09-backend-architecture|백엔드 아키텍처]]에서 확인한다.
 
 ## 2026-10-08 구현 API · Swagger
 
-현재 프론트엔드 연동은 [실제 API 명세서](../api/API_SPEC.md), [OpenAPI JSON](../api/openapi.json), [Swagger 사용 안내](../api/SWAGGER.md)를 기준으로 합니다. 인증·계정 관리·모임·장소·이미지·댓글·후기·신고의 실제 camelCase 필드와 응답 래퍼, 요청 보호 헤더, 오류 상태를 정리했습니다. 위 목표 설계의 Bearer·cursor·revision·outbox 계약은 현재 구현과 구분합니다.
+현재 프론트엔드 연동은 [실제 API 명세서](../../eolssu-api/docs/api/API_SPEC.md), [OpenAPI JSON](../../eolssu-api/docs/api/openapi.json), [Swagger 사용 안내](../../eolssu-api/docs/api/SWAGGER.md)를 기준으로 합니다. 인증·계정 관리·모임·장소·이미지·댓글·후기·신고의 실제 camelCase 필드와 응답 래퍼, 요청 보호 헤더, 오류 상태를 정리했습니다. 위 목표 설계의 Bearer·cursor·revision·outbox 계약은 현재 구현과 구분합니다.
 
 명세는 2026-10-08 로컬 소스 기준입니다. 계정 관리·인증 보호·주최 모임 삭제는 로컬 구현과 배포 여부를 구분하며 운영 검증 완료로 간주하지 않습니다. Swagger 런타임은 local/docker/dev에만 제공하고 prod에서는 비활성화합니다. 취소 `DELETE /v1/events/{id}`는 사유 본문과 상세 유지, 삭제 `DELETE /v1/events/{id}/host`는 본문 없이 조회 제외라는 서로 다른 계약입니다.
