@@ -47,7 +47,7 @@ JPEG/PNG만 지원한다. 프론트는 createImageBitmap·Canvas로 변환하고
 ## JWT 로그인 유지
 
 - Nimbus 기반 HS256 서명 JWT, 접근 토큰 15분.
-- `eolssu_session`은 JWT, `eolssu_refresh`는 무작위 32바이트 토큰. 둘 다 HttpOnly·SameSite=Lax, 서버 dev/prod에서는 Secure.
+- `earthuu_session`은 JWT, `earthuu_refresh`는 무작위 32바이트 토큰. 둘 다 HttpOnly·SameSite=Lax, 서버 dev/prod에서는 Secure.
 - DB member_sessions에는 refresh의 SHA-256 해시·회원·7일 절대 만료를 보존한다. 접근 JWT에도 session id를 넣고 DB 세션을 확인하므로 로그아웃을 즉시 반영한다.
 - 접근 JWT가 만료되면 요청의 refresh 쿠키를 검증하고 새 접근 JWT를 발급한다. refresh 자체의 만료를 매번 연장하거나 회전하는 구현은 아니다.
 - 환경마다 별도 256비트 이상 키와 issuer를 사용한다. 키는 Git 제외 환경 파일에 보존한다. 키가 없으면 dev/prod 서버는 시작하지 않는다.
